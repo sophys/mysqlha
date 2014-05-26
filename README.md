@@ -11,40 +11,50 @@ mysqlha
 
 
 1. 卸载原有数据库 
+```
   apt-get -y remove mysql-server --purge
   rm -rf /etc/mysql
   rm -rf /usr/local/mysql
-
+```
 
 2. 建立相关目录
-  mkdir -p /usr/local/mysql
+
+``` 
+ mkdir -p /usr/local/mysql
   tar -xzvf ./mysql-cluster-gpl-7.2.7-linux2.6-x86_64.tar.gz 
   mv ./mysql-cluster-gpl-7.2.7-linux2.6-x86_64/* /usr/local/mysql
-
+```
 
 3. 安装包依赖
+```
   apt-get -y install libaio1
-
+```
 
 4. 安装集群
+```
 /usr/local/mysql/scripts/mysql_install_db --basedir=/usr/local/mysql --datadir=/usr/local/mysql/data/
-
+```
 
 5. 设置集群配置文件
+```
   mkdir -p /var/lib/mysql-cluster
   cp ./config.ini /var/lib/mysql-cluster/
   cp ./my.cnf /etc/
+```
 
 配置集群
 =======
 
-1. 修改密码 /usr/local/mysql/bin/mysqladmin -u root password '654321'
-
+1. 修改密码 
+```
+/usr/local/mysql/bin/mysqladmin -u root password '654321'
+```
 
 2. 远程访问权限
-  /usr/local/mysql/bin/mysql -u root -p
-  GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '654321' WITH GRANT OPTION;
-
+```  
+/usr/local/mysql/bin/mysql -u root -p
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '654321' WITH GRANT OPTION;
+```
 
 集群启动
 ======
@@ -52,12 +62,17 @@ mysqlha
 首次启动的话，需要自己手动启动
 
 1. 管理节点
+```
     /usr/local/mysql/bin/ndb_mgmd -f /var/lib/mysql-cluster/config.ini --initial
+```
 2. 数据节点
+```
     /usr/local/mysql/bin/ndbd --initial
+```
 3. 访问节点
+```
     /usr/local/mysql/bin/mysqld_safe --user=root&
-
+```
 mysqlhad的启动（HA的daemon进程）
 ========
 
