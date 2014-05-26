@@ -63,11 +63,13 @@ mysqlhad的启动（HA的daemon进程）
 
 mysqlhad 侦听55555端口
 配置文件:/var/mysqlhad.conf 内容为：
-···
+
+```
 nodeip
 gateway
 sleeptime
-···
+```
+
 日志文件:/var/mysqlhadlog
 
 mysqlhad可以放任意目录运行,但是需要以root身份运行.直接运行会创建后台daemon进程,加 -t 参数可以打印运行的一些输出信息,但是会在前台一直运行.
