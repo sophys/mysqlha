@@ -3,8 +3,19 @@ mysqlha
 
   本测试采用的是32位环境，mysql-cluster版本位：mysql-cluster-gpl-7.2.7-linux2.6-i686.tar.gz，可自行去网上搜索下载。64位的话用mysql-cluster-gpl-7.2.7-linux2.6-x86_64.tar.gz。
   
-  本测试mysql安装路径为/usr/local/mysql，my.cnf路径位/etc,config.ini路径位/var/lib/mysql-cluster/,默认登陆用户为root。
-  下面是集群安装步骤：
+  本测试mysql安装路径为
+  
+  /usr/local/mysql
+  
+  my.cnf路径位
+  /etc
+  config.ini路径位
+  
+  /var/lib/mysql-cluster/
+  
+  默认登陆用户为root。
+
+
   
 集群的安装
 ======
@@ -46,11 +57,13 @@ mysqlha
 =======
 
 1. 修改密码 
+
 ```
 /usr/local/mysql/bin/mysqladmin -u root password '654321'
 ```
 
 2. 远程访问权限
+
 ```  
 /usr/local/mysql/bin/mysql -u root -p
 GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '654321' WITH GRANT OPTION;
@@ -62,14 +75,17 @@ GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '654321' WITH GRANT OPTI
 首次启动的话，需要自己手动启动
 
 1. 管理节点
+
 ```
     /usr/local/mysql/bin/ndb_mgmd -f /var/lib/mysql-cluster/config.ini --initial
 ```
 2. 数据节点
+
 ```
     /usr/local/mysql/bin/ndbd --initial
 ```
 3. 访问节点
+
 ```
     /usr/local/mysql/bin/mysqld_safe --user=root&
 ```
