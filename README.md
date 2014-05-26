@@ -1,7 +1,7 @@
 mysqlha
 =======
 
-  本测试采用的是32位环境，mysql-cluster版本位：mysql-cluster-gpl-7.2.7-linux2.6-i686.tar.gz，可自行去网上搜索下载。64位的话用mysql-cluster-gpl-7.2.7-linux2.6-x86_64.tar.gz。
+  本代码是基于博客[Mysql-cluster数据库集群双机HA研究](http://sophys.github.io/blog/2014/05/25/mysql-clustershu-ju-ku-ji-qun-shuang-ji-hayan-jiu/)所写的。测试采用的是32位环境，linux环境为debian，如果是其他系列只需修改部分指令即可。mysql-cluster版本位：mysql-cluster-gpl-7.2.7-linux2.6-i686.tar.gz，可自行去网上搜索下载。64位的话用mysql-cluster-gpl-7.2.7-linux2.6-x86_64.tar.gz。
   
   本测试mysql安装路径为
   
@@ -21,14 +21,14 @@ mysqlha
 ======
 
 
-1. 卸载原有数据库 
+* 卸载原有数据库 
 ```
   apt-get -y remove mysql-server --purge
   rm -rf /etc/mysql
   rm -rf /usr/local/mysql
 ```
 
-2. 建立相关目录
+* 建立相关目录
 
 ``` 
  mkdir -p /usr/local/mysql
@@ -36,17 +36,17 @@ mysqlha
   mv ./mysql-cluster-gpl-7.2.7-linux2.6-x86_64/* /usr/local/mysql
 ```
 
-3. 安装包依赖
+* 安装包依赖
 ```
   apt-get -y install libaio1
 ```
 
-4. 安装集群
+* 安装集群
 ```
 /usr/local/mysql/scripts/mysql_install_db --basedir=/usr/local/mysql --datadir=/usr/local/mysql/data/
 ```
 
-5. 设置集群配置文件
+* 设置集群配置文件
 ```
   mkdir -p /var/lib/mysql-cluster
   cp ./config.ini /var/lib/mysql-cluster/
@@ -56,35 +56,29 @@ mysqlha
 配置集群
 =======
 
-1. 修改密码 
+* 修改密码，根据自己需求自行设置
 
 ```
 /usr/local/mysql/bin/mysqladmin -u root password '654321'
 ```
 
-2. 远程访问权限
-
-```  
-/usr/local/mysql/bin/mysql -u root -p
-GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '654321' WITH GRANT OPTION;
-```
 
 集群启动
 ======
 
 首次启动的话，需要自己手动启动
 
-1. 管理节点
+* 管理节点
 
 ```
     /usr/local/mysql/bin/ndb_mgmd -f /var/lib/mysql-cluster/config.ini --initial
 ```
-2. 数据节点
+* 数据节点
 
 ```
     /usr/local/mysql/bin/ndbd --initial
 ```
-3. 访问节点
+* 访问节点
 
 ```
     /usr/local/mysql/bin/mysqld_safe --user=root&
